@@ -1,0 +1,170 @@
+---
+title: "Statystyka"
+author: "Dawid Knap"
+date: 'Kwiecien 2022'
+autosize: true
+output: 
+    ioslides_presentation:
+        logo: rlogo.png
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Wykorzystanie stylów
+
+- Link do strony <http://rmarkdown.rstudion.com>
+- Link przesłonięty [wszib](www.wszib.edu.pl)
+
+- **Pogrubienie** <b>Pogrubienie</b>
+- *Kursywa* <i>kursywa</i>
+
+
+## Wypunktowanie
+
+ 1. Prezentacje należy skompilować do pliku:
+    ioslides_presentation,
+    slidy_presentation,
+    html_document </br>
+    
+ 2. Poruszanie się po slajdach
+ 
+ 3. Wstawianie rysunku ![alt](rlogo.png)
+
+
+## Kolumny
+ 
+<div class="columns-2" style="width: 800px;">
+ 
+### lewa kolumna
+
+```{r}
+wynik<-c(114, 88, 59, 61, 78, 56, 62, 102, 47, 67, 117, 91, 85, 103, 134, 61, 80, 133, 121, 125, 120, 67, 85, 91, 93, 92, 34, 116, 99, 116, 91, 90, 85, 31, 82, 73, 160, 90, 68, 51, 133, 59, 113, 118, 94, 64, 77, 55, 137, 73)
+summary(wynik)[3:4]
+```
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+### prawa kolumna
+
+```{r,echo=T,eval=T}
+head(wynik)
+```
+</div>
+
+
+## SLide with R output
+
+```{r cars, echo = TRUE}
+plot(wynik,type="b",xlab="", ylab="oceny", main = "Zakres ocen",col="red",pch=19)
+```
+
+
+## Wymagania do projektu zaliczeniowego
+
+- statystyki opisowe z wnioskami
+- histogram częstości
+- box-plot
+- testowanie hipotez
+
+
+## Przykładowe dane
+
+Dane 'Wholesale customers' UCI Machine Learning Repository
+
+```{r}
+dane<-read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/00292/Wholesale%20customers%20data.csv")
+head(dane)
+```
+
+## Miary pozycyjne
+
+
+<font size="4"/>
+min/max
+```{r}
+d<-dane$Milk
+min(d);max(d)
+```
+
+kwartyle
+```{r}
+quantile(d)
+```
+  
+mediana
+```{r}
+median(d)
+```
+  
+srednia
+```{r}
+
+mean(d)
+```
+
+</font>
+
+## Miary rozproszenia (1)
+
+- rozstęp
+
+```{r}
+max(d)-min(d)
+```
+
+- rozstęp międzykwartylny
+
+```{r}
+quantile(d)[4]-quantile(d)[2]
+```
+
+- odchylenie przeciętne od mediany
+```{r}
+mad(d)
+```
+
+
+## Miary rozproszenia (2)
+
+- wariancja
+```{r}
+var(d)
+```
+
+- odchylenie standardowe
+```{r}
+sd(d)
+```
+
+- błąd standardowy
+```{r}
+sd(d)/sqrt(length(d))
+```
+
+- współczynnik zmienności
+```{r}
+sd(d)/mean(d)
+```
+
+## Histogram
+
+```{r}
+hist(d,breaks=7,probability=T,col=rainbow(9),ylab="")
+rug(d, col="red")
+lines(density(d),lty=2, lwd =3, col="red")
+curve(dnorm(x, mean = mean(d), sd =sd(d)) , add=T , col="darkgreen", lty=3, lwd =3)
+```
+
+## Boxplot
+```{r}
+boxplot(d, col="lightblue", horizontal = T)
+```
+
+
