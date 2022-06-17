@@ -1,0 +1,135 @@
+---
+title: "MPiS - Projekt zaliczeniowy"
+author: "Dawid Knap"
+date: '2022-05-19'
+autosize: true
+output: 
+  ioslides_presentation:
+    logo: logo.jpg
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Dane "CNNpred" UCI Machine Learning Repository
+
+*Zebrane dane przedstawiają codzienne zmiany wskaźników technicznych dotyczących indexu S&P 500,
+w skład którego wchodzi 500 spółek o największej kapitalizacji, notowanych na amerykańskich giełdach NYSE i NASDAQ.*
+
+<br/><br/><font size="4"/><div align="right">Źródło: 
+<a href="https://archive.ics.uci.edu/ml/datasets/CNNpred%3A+CNN-based+stock+market+prediction+using+a+diverse+set+of+variables">Ehsan Hoseinzade, a Ph.D. student of computer science at Simon Fraser University. ehoseinz '@' sfu.ca</a></div><br/></font>
+
+```{r}
+dane<-read.csv("Processed_S&P.csv")
+# head(dane)
+```
+
+
+## wykres notowań S&P 500 z lat 2010 - 2017
+
+```{r}
+price<-dane$Close
+plot(price, type="l", xlab="Dzień", ylab="Cena", main="Notowanie indexu S&P 500",
+     col="green", pch=19)
+```
+
+## Statystyki opisowe ruchu ceny indexu
+
+<font size="3">
+Minimum:
+```{r}
+min(price)
+```
+Maksimum:
+```{r}
+max(price)
+```
+Średnia cena:
+```{r}
+mean(price)
+```
+Mediana:
+```{r}
+median(price)
+```
+</font>
+
+## Statystyki opisowe ruchu ceny indexu 2
+
+<font size="3">
+Kwartyle:
+```{r}
+quantile(price)
+```
+Rozstęp
+```{r}
+max(price)-min(price)
+```
+Rozstęp międzykwartylny
+```{r}
+quantile(price)[4]-quantile(price)[2]
+```
+Odchylenie przeciętne od mediany
+```{r}
+mad(price)
+```
+</font>
+
+## Statystyki opisowe ruchu ceny indexu 3
+
+<font size="3">
+Wariancja
+```{r}
+var(price)
+```
+Odchylenie standardowe
+```{r}
+sd(price)
+```
+Błąd standardowy
+```{r}
+sd(price)/sqrt(length(price))
+```
+Współczynnik zmienności
+```{r}
+sd(price)/mean(price)
+```
+</font>
+
+## Wnioski
+
+Wnioski na podstawie miar pozycyjnych:
+
+Cena najmniejsza to 1022.58, a największa to 2594.38.
+Mediana dzieli dane na 2 połówki, gdzie wartości mniejsze lub równe 1791.07 stanowią połowę wszystkich historycznych cen.
+Mediana znajduje się między pierwszym (1325.682) i trzecim (2081.26) kwartylem.
+Średnia cena indexu wynosi 1731.97 i jest nieznacznie mniejsza od mediany.
+
+
+## Wnioski (2)
+
+Rozstęp jest równy 1571.8 i jest ponad dwukrotnie większy od rozstępu międzykwartylnego, który wynosi 755.58.
+
+Na podstawie średniej i odchylenia stadardowego można stwierdzić, że przeciętna wartość powinna się mieścić w przedziale od 1,303.94 do 2160. Odchylenie standardowe jest duże.
+
+Błąd statystyczny wynosi 9.60, dlatego średnia cen powinna się mieścić w przedziale od 1722.37 do 1,741.57.
+Współczynnik zmienności jest na poziomie 25% i świadczy o niewielkim rozrzucie danych.
+
+
+
+## Histogram
+
+```{r}
+hist(price,breaks=7,probability=T,col=rainbow(9),ylab="")
+rug(price, col="red")
+lines(density(price),lty=2, lwd =3, col="red")
+curve(dnorm(x, mean = mean(price), sd =sd(price)) , add=T , col="darkgreen", lty=3, lwd =3)
+```
+
+## Boxplot
+```{r}
+boxplot(price, col="lightblue", horizontal = T)
+```
